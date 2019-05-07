@@ -8,9 +8,20 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+let reviews = [
+  {
+    image: "https://images-na.ssl-images-amazon.com/images/I/51l5XzLln%2BL._SX348_BO1,204,203,200_.jpg",
+    name: "Cracking the Coding Interview",
+    review: "Great Book! I learned SO MUCH!"
+  }
+];
+
+
 app.get("/", (req, res) => {
   res.render("landing");
 });
+
 
 app.get("/searchbook", (req, res) => {
   key = req.query.key;
@@ -25,8 +36,9 @@ app.get("/searchbook", (req, res) => {
   });
 });
 
+
 app.get("/reviews", (req, res) => {
-  res.render("reviews");
+  res.render("reviews", {reviews: reviews});
 });
 
 app.get("/postbook", (req, res) => {
