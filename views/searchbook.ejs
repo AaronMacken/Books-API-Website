@@ -1,1 +1,25 @@
-<h1>Search a Book</h1>
+<% include partials/header %>
+
+<div class="container">
+  <div class="row justify-content-center my-1 border">
+    <h1>Search a Book</h1>
+  </div>
+
+  <div class="row justify-content-center">
+    <form method="GET" action="/searchbook">
+      <input type="text" placeholder="Enter name of book" name="key" />
+      <button>Submit</button>
+    </form>
+  </div>
+
+  <div class="row text-center border" style="display: flex; flex-wrap: wrap;">
+    <% info.books.forEach((e) => { %>
+    <div class="col-md-4 col-sm-12">
+      <img src="<%= e.image %>" alt="" />
+      <a href="<%= e.url %>"><h5><%= e.title %></h5></a>
+    </div>
+    <% }); %>
+  </div>
+</div>
+
+<% include partials/footer %>
