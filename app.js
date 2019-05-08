@@ -30,7 +30,6 @@ app.get("/searchbook", (req, res) => {
   request(URL, (error, response, body) => {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      console.log(info);
       res.render("searchbook", { info: info });
     }
   });
@@ -38,11 +37,21 @@ app.get("/searchbook", (req, res) => {
 
 
 app.get("/reviews", (req, res) => {
-  res.render("reviews", {reviews: reviews});
+  res.render("reviews", { reviews: reviews });
 });
 
-app.get("/postbook", (req, res) => {
+app.get("/reviews/new", (req, res) => {
   res.render("postbook");
+});
+
+app.post("/reviews", (req, res) => {
+  let review = {
+    image: req.body.image,
+    name: req.body.title,
+    review: req.body.review
+  }
+  reviews.push(review);
+  res.redirect("reviews");
 });
 
 app.listen(port, () => console.log("Server is listeneing"));
