@@ -14,9 +14,12 @@
 
   <div class="row text-center border" style="display: flex; flex-wrap: wrap;">
     <% info.books.forEach((e) => { %>
-    <div class="col-md-4 col-sm-12">
-      <img src="<%= e.image %>" alt="" />
-      <a href="<%= e.url %>"><h5><%= e.title %></h5></a>
+    <div class="card col-md-4 col-sm-12" style="width: 18rem;">
+      <img src="<%= e.image %>" class="card-img-top" />
+      <div class="card-body">
+        <a href="<%= e.url %>" class="card-title"><h5><%= e.title %></h5></a>
+        <a href="/reviews/new" class="btn btn-primary mb-1">Write a Review</a>
+      </div>
     </div>
     <% }); %>
   </div>

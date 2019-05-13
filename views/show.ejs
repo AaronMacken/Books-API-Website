@@ -1,0 +1,11 @@
+<% include partials/header %>
+<a href="/reviews" class="btn btn-primary">Go Back</a>
+<div class="card d-flex align-items-center">
+  <img src="<%= review.image %>" class="card-img-top" style="width: 18rem;" />
+  <div class="card-body">
+    <h1 class="card-title"><%= review.name %></h1>
+    <p class="card-text"><%= review.review %></p>
+  </div>
+</div>
+
+<% include partials/footer %>
