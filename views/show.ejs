@@ -1,5 +1,9 @@
 <% include partials/header %>
-<a href="/reviews" class="btn btn-primary">Go Back</a>
+<a href="/reviews" class="btn btn-outline-primary">Go Back</a>
+<a href="/reviews/<%= review._id %>/edit" class="btn btn-outline-warning">Edit</a>
+<form action="/reviews/<%= review._id %>?_method=DELETE" method="POST">
+  <button class="btn btn-outline-danger">Delete</button>
+</form>
 <div class="card d-flex align-items-center">
   <img src="<%= review.image %>" class="card-img-top" style="width: 18rem;" />
   <div class="card-body">

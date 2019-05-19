@@ -4,13 +4,15 @@ const express = require("express"),
   port = 3000,
   request = require("request"),
   bodyParser = require("body-parser"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  methodOverride = require("method-override");
 
 
 // App Configure
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 
 // Mongo DB Setup 
@@ -38,7 +40,6 @@ app.get("/searchbook", (req, res) => {
   request(URL, (error, response, body) => {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      console.log(req);
       res.render("apiIndex", { info: info });
     }
   });
@@ -46,7 +47,7 @@ app.get("/searchbook", (req, res) => {
 
 // review Index //
 app.get("/reviews", (req, res) => {
-  Review.find({}, function(err, reviews) {
+  Review.find({}, function (err, reviews) {
     if (err) {
       console.log("Something went wrong when trying to fetch the reviews.");
     } else {
@@ -60,7 +61,7 @@ app.get("/reviews", (req, res) => {
 app.post("/reviews", (req, res) => {
 
   Review.create(req.body.post,
-    function(err, newReview) {
+    function (err, newReview) {
       if (err) {
         console.log("Something went wrong when trying to post a review!");
       } else {
@@ -74,7 +75,7 @@ app.post("/reviews", (req, res) => {
 // New
 app.get("/reviews/new", (req, res) => {
   var data = "";
-  res.render("new", {data: data});
+  res.render("new", { data: data });
 });
 
 // Show
@@ -88,13 +89,35 @@ app.get("/reviews/:id", (req, res) => {
   });
 });
 
-//Edit
+// Edit
 app.get("/reviews/:id/edit", (req, res) => {
   Review.findById(req.params.id, (err, foundReview) => {
-    if(err){
+    if (err) {
       res.redirect("/reviews")
+    } else {
+      res.render("edit", { review: foundReview });
+    }
+  });
+});
+
+// Update
+app.put("/reviews/:id", (req, res) => {
+  Review.findByIdAndUpdate(req.params.id, req.body.post, (err, updatedReview) => {
+    if(err){
+      res.redirect("/reviews/" + req.params.id);
     }else{
-      res.render("edit", {review: foundReview});
+      res.redirect("/reviews/" + req.params.id);
+    }
+  });
+});
+
+// Destroy
+app.delete("/reviews/:id", (req, res) => {
+  Review.findByIdAndRemove(req.params.id, (err) => {
+    if(err){
+      res.redirect("/reviews");
+    }else{
+      res.redirect("/reviews");
     }
   });
 });
