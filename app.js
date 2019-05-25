@@ -5,8 +5,13 @@ const express = require("express"),
   request = require("request"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  methodOverride = require("method-override");
+  methodOverride = require("method-override"),
+  Review = require("./models/review"),
+  Comment = require("./models/comment"),
+  seedDB = require("./seeds");
 
+  // After seeding once, be sure to comment out. It will create a new ID each time it seeds, thus making previous show routes obsolete.
+  // seedDB();
 
 // App Configure
 app.set("view engine", "ejs");
@@ -14,22 +19,14 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-
-// Mongo DB Setup 
+// Connect mongodb
 mongoose.connect("mongodb://localhost:27017/barneys", {
   useNewUrlParser: true
 });
-const reviewSchema = new mongoose.Schema({
-  image: String,
-  name: String,
-  review: String
-});
-let Review = mongoose.model("Review", reviewSchema);
-
 
 // Landing Page //
 app.get("/", (req, res) => {
-  res.render("landing");
+  res.render("reviews/landing");
 });
 
 // api Index //
@@ -40,7 +37,7 @@ app.get("/searchbook", (req, res) => {
   request(URL, (error, response, body) => {
     if (!error && response.statusCode == 200) {
       var info = JSON.parse(body);
-      res.render("apiIndex", { info: info });
+      res.render("reviews/apiIndex", { info: info });
     }
   });
 });
@@ -51,7 +48,7 @@ app.get("/reviews", (req, res) => {
     if (err) {
       console.log("Something went wrong when trying to fetch the reviews.");
     } else {
-      res.render("index", { reviews: reviews });
+      res.render("reviews/index", { reviews: reviews });
     }
   });
 });
@@ -75,16 +72,16 @@ app.post("/reviews", (req, res) => {
 // New
 app.get("/reviews/new", (req, res) => {
   var data = "";
-  res.render("new", { data: data });
+  res.render("reviews/new", { data: data });
 });
 
 // Show
 app.get("/reviews/:id", (req, res) => {
-  Review.findById(req.params.id, (err, foundReview) => {
+  Review.findById(req.params.id).populate('comments').exec((err, foundReview) => {
     if (err) {
-      console.log("Something went wrong when loading the reviews");
+      console.log(err);
     } else {
-      res.render("show", { review: foundReview });
+      res.render("reviews/show", { review: foundReview });
     }
   });
 });
@@ -95,7 +92,7 @@ app.get("/reviews/:id/edit", (req, res) => {
     if (err) {
       res.redirect("/reviews")
     } else {
-      res.render("edit", { review: foundReview });
+      res.render("reviews/edit", { review: foundReview });
     }
   });
 });
@@ -122,18 +119,31 @@ app.delete("/reviews/:id", (req, res) => {
   });
 });
 
+// COMMENT ROUTES //
+
+// Comment - form
+app.get("/reviews/:id/comments/new", (req, res) => {
+  Review.findById(req.params.id, (err, foundReview) => {
+    if(err) console.log(err);
+    else{
+      res.render("comments/new", {review: foundReview});
+    }
+  });
+});
+
+// Comment - post
+app.post("/reviews/:id/comments", (req, res) => {
+  Review.findById(req.params.id, (err, review) => {
+    if(err) console.log(err);
+    else{
+      Comment.create(req.body.comment, (err, comment) => {
+        review.comments.push(comment);
+        review.save();
+        res.redirect("/reviews/" + review._id);
+      })
+    }
+  });
+});
 
 app.listen(port, () => console.log("Server is listeneing"));
 
-// Initial addition to DB, added once.
-// Review.create({
-//   image:"https://images-na.ssl-images-amazon.com/images/I/51l5XzLln%2BL._SX348_BO1,204,203,200_.jpg",
-//   name: "Cracking the Coding Interview",
-//   review: "Great Book! I learned SO MUCH!"
-// }, function(err, newReview){
-//   if(err){
-//     console.log("Something went wrong creating the review!");
-//   }else{
-//     console.log("Added: "+ newReview.name);
-//   }
-// });

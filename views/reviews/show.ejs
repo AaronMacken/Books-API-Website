@@ -1,15 +1,27 @@
-<% include partials/header %>
+<% include ../partials/header %>
+
+<!-- Control Buttons -->
 <a href="/reviews" class="btn btn-outline-primary">Go Back</a>
 <a href="/reviews/<%= review._id %>/edit" class="btn btn-outline-warning">Edit</a>
+<a href="/reviews/<%= review._id %>/comments/new" class="btn btn-outline-success">Comment</a>
 <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST">
   <button class="btn btn-outline-danger">Delete</button>
 </form>
+
+<!-- Content -->
 <div class="card d-flex align-items-center">
   <img src="<%= review.image %>" class="card-img-top" style="width: 18rem;" />
   <div class="card-body">
+    <!-- Initial content -->
     <h1 class="card-title"><%= review.name %></h1>
     <p class="card-text"><%= review.review %></p>
+
+    <!-- Comments -->
+    <h1 class="card-title">Comments</h1>
+   <% review.comments.forEach((comment) => { %>
+    <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+   <% }); %>
   </div>
 </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>
