@@ -14,7 +14,13 @@
   <div class="card-body">
     <!-- Initial content -->
     <h1 class="card-title"><%= review.name %></h1>
-    <p class="card-text"><%= review.review %></p>
+    <p class="card-text"><%= review.review %> - 
+      <% if(review.author === undefined) { %>
+        <strong>Seeder</strong>
+      <% } else { %>
+        <%= review.author %> 
+      <% } %>
+      <strong><%= review.author %></strong></p>
 
     <!-- Comments -->
     <h1 class="card-title">Comments</h1>

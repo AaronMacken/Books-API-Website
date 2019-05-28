@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
+  author: String,
   image: String,
   name: String,
   review: String,

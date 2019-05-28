@@ -41,7 +41,7 @@ function seedDB() {
                             else{
                                 console.log("Added: review");
                                 Comment.create({
-                                    author: 'User123',
+                                    author: 'Seeder',
                                     text: "Great review!"
                                 }, (err, comment) => {
                                     if(err) console.log(err);
