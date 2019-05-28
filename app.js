@@ -17,7 +17,7 @@ const express = require("express"),
   User = require("./models/user");
 
 // Run this function once then comment out to prevent new data being seeded each time.
-//  seedDB();
+ // seedDB();
 
 // =============
 // App Configure
