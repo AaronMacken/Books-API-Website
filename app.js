@@ -23,7 +23,7 @@ const express = require("express"),
 // App Configure
 // =============
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "public"));
+app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(
@@ -38,7 +38,8 @@ app.use(
 // Connect mongodb
 // ================
 mongoose.connect("mongodb://localhost:27017/barneys", {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
 
 // ===============

@@ -1,0 +1,37 @@
+/* Colors
+
+#25CED1
+
+*/
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   
+}
+
+body {
+    color: white;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+/* Navbar */
+.navbar {
+    border-bottom: 2px solid black;
+}
+.bg-light {
+    background-color: rgb(17, 208, 211)!important;
+}
+
+/* Landing */
+.header {
+    height: 95vh;
+    background-image: linear-gradient(to top right, rgba(220, 225, 233, 0.781),#25CED1), url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1453&q=80);
+    background-position: top;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 95%);    
+}
+
+
