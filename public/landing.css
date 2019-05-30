@@ -1,6 +1,5 @@
 /* Colors
-
-#25CED1
+#1B1B1C
 
 */
 
@@ -22,14 +21,17 @@ body {
 .navbar {
     border-bottom: 2px solid black;
 }
+.navbar-brand {
+    font-size: 2rem;
+}
 .bg-light {
-    background-color: rgb(17, 208, 211)!important;
+    background-color: #1B1B1C!important;
 }
 
 /* Landing */
 .header {
     height: 95vh;
-    background-image: linear-gradient(to top right, rgba(220, 225, 233, 0.781),#25CED1), url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1453&q=80);
+    background-image: linear-gradient(to top,#646669d8,#1B1B1C), url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1453&q=80);
     background-position: top;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 95%);    
 }
