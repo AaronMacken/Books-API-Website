@@ -8,10 +8,9 @@
     <div class="row border">
 
         <form action="/reviews" method="POST">
-            <input type="text" placeholder="Author" name="post[author]" value="<%= currentUser.username %>">
-            <input type="text" placeholder="Title" name="post[name]">
-            <input type="text" placeholder="Image URL" name="post[image]">
-            <textarea name="post[review]" placeholder="Enter your review here"></textarea>
+            <input type="text" placeholder="Title" name="review[name]">
+            <input type="text" placeholder="Image URL" name="review[image]">
+            <textarea name="review[review]" placeholder="Enter your review here"></textarea>
             <button>Submit</button>
         </form>
     </div>

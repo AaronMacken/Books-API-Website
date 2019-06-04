@@ -15,17 +15,22 @@
     <!-- Initial content -->
     <h1 class="card-title"><%= review.name %></h1>
     <p class="card-text"><%= review.review %> - 
-      <% if(review.author === undefined) { %>
+      <% if(review.author.username === undefined) { %>
         <strong>Seeder</strong>
       <% } else { %>
-        <%= review.author %> 
+         <strong><%= review.author.username %></strong>
       <% } %>
-      <strong><%= review.author %></strong></p>
+      
 
     <!-- Comments -->
     <h1 class="card-title">Comments</h1>
    <% review.comments.forEach((comment) => { %>
-    <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+    <% if (comment.author.username === undefined) { %>
+      <p>Seeder - <%= comment.text %></p>
+    <% } else { %>
+      <p> <%= comment.author.username %> - <%= comment.text %></p>
+    <% } %>
+    
    <% }); %>
   </div>
 </div>

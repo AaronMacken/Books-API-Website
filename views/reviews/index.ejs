@@ -10,13 +10,13 @@
     <div class="card col-md-8 text-center">
       <img src="<%= e.image %>" class="card-img-top" />
       <div class="card-body">
-      <% if(e.author === undefined) { %>
+      <% if(e.author.username === undefined) { %>
           <h5 class="card-title">
             Seeder: <%= e.name %>
           </h5>
       <% } else { %>
         <h5 class="card-title">
-            <%= e.author %>: <%= e.name %>
+            <%= e.author.username %>: <%= e.name %>
           </h5>
       <% } %>
 

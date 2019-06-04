@@ -8,7 +8,6 @@
     <div class="row border">
 
         <form action="/reviews/<%=review._id%>/comments" method="POST">
-            <input type="text" placeholder="Author..." name="comment[author]" value="<%= currentUser.username %>">
             <textarea name="comment[text]" placeholder="Write your comment here..."></textarea>
             <button>Submit</button>
         </form>
