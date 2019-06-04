@@ -67,7 +67,7 @@ router.get("/:id/edit", isLoggedIn, (req, res) => {
 router.put("/:id", isLoggedIn, (req, res) => {
   Review.findByIdAndUpdate(
     req.params.id,
-    req.body.post,
+    req.body.review,
     (err, updatedReview) => {
       if (err) {
         res.redirect("/reviews/" + req.params.id);
