@@ -1,5 +1,6 @@
 var express = require("express"),
-  router = express.Router();
+  router = express.Router(),
+  mongoose = require("mongoose");
 
 var Review = require("../models/review");
 
@@ -21,13 +22,13 @@ router.get("/new", isLoggedIn, (req, res) => {
 
 // Create - new review POST route
 router.post("/", isLoggedIn, (req, res) => {
-  var author = {id: req.user._id, username: req.user.username}
+  var author = { id: req.user._id, username: req.user.username };
   var reviewObj = {
     name: req.body.review.name,
     image: req.body.review.image,
     review: req.body.review.review,
     author: author
-  }
+  };
   Review.create(reviewObj, function(err, newReview) {
     if (err) {
       console.log("Something went wrong when trying to post a review!");
@@ -53,18 +54,14 @@ router.get("/:id", (req, res) => {
 });
 
 // Edit - Show edit review form
-router.get("/:id/edit", isLoggedIn, (req, res) => {
+router.get("/:id/edit", checkPostOwnership, (req, res) => {
   Review.findById(req.params.id, (err, foundReview) => {
-    if (err) {
-      res.redirect("/reviews");
-    } else {
-      res.render("reviews/edit", { review: foundReview });
-    }
+    res.render("reviews/edit", {review: foundReview});
   });
 });
 
 // Update - Edit review PUT route
-router.put("/:id", isLoggedIn, (req, res) => {
+router.put("/:id", checkPostOwnership, (req, res) => {
   Review.findByIdAndUpdate(
     req.params.id,
     req.body.review,
@@ -79,7 +76,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
 });
 
 // Destroy
-router.delete("/:id", isLoggedIn, (req, res) => {
+router.delete("/:id", checkPostOwnership, (req, res) => {
   Review.findByIdAndRemove(req.params.id, err => {
     if (err) {
       res.redirect("/reviews");
@@ -89,12 +86,31 @@ router.delete("/:id", isLoggedIn, (req, res) => {
   });
 });
 
-// Middleware for verifying a logged in user
+// Middleware
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.redirect("/login");
+}
+
+function checkPostOwnership(req, res, next) {
+  if (req.isAuthenticated()) {
+    Review.findById(req.params.id, (err, foundReview) => {
+      if (err) {
+        res.redirect("back");
+      } else {
+        if (foundReview.author.id.equals(req.user._id)) {
+          next();
+          // res.render("reviews/edit", { review: foundReview });
+        } else {
+          res.redirect("back");
+        }
+      }
+    });
+  } else {
+    res.redirect("back");
+  }
 }
 
 module.exports = router;

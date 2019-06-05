@@ -2,11 +2,16 @@
 
 <!-- Control Buttons -->
 <a href="/reviews" class="btn btn-outline-primary">Go Back</a>
+<a
+  href="/reviews/<%= review._id %>/comments/new"
+  class="btn btn-outline-success">Comment</a>
+
+<% if(currentUser && review.author.id.equals(currentUser._id)){ %>
 <a href="/reviews/<%= review._id %>/edit" class="btn btn-outline-warning">Edit</a>
-<a href="/reviews/<%= review._id %>/comments/new" class="btn btn-outline-success">Comment</a>
 <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST">
   <button class="btn btn-outline-danger">Delete</button>
 </form>
+<% } %>
 
 <!-- Content -->
 <div class="card d-flex align-items-center">
@@ -14,24 +19,33 @@
   <div class="card-body">
     <!-- Initial content -->
     <h1 class="card-title"><%= review.name %></h1>
-    <p class="card-text"><%= review.review %> - 
-      <% if(review.author.username === undefined) { %>
-        <strong>Seeder</strong>
+    <p class="card-text">
+      <%= review.review %> - <% if(review.author.username === undefined) { %>
+      <strong>Seeder</strong>
       <% } else { %>
-         <strong><%= review.author.username %></strong>
+      <strong><%= review.author.username %></strong>
       <% } %>
-      
 
-    <!-- Comments -->
+      <!-- Comments -->
+    </p>
+
     <h1 class="card-title">Comments</h1>
-   <% review.comments.forEach((comment) => { %>
-    <% if (comment.author.username === undefined) { %>
-      <p>Seeder - <%= comment.text %></p>
+    <% review.comments.forEach((comment) => { %> <% if (comment.author.username
+    === undefined) { %>
+    <p>Seeder - <%= comment.text %></p>
     <% } else { %>
-      <p> <%= comment.author.username %> - <%= comment.text %></p>
-    <% } %>
+    <p><%= comment.author.username %> - <%= comment.text %></p>
+    <!-- Comment control buttons -->
+
+    <% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+      <a class="btn btn-outline-warning" href="/reviews/<%=review._id%>/comments/<%=comment._id%>/edit"> Edit</a>
+    <form action="/reviews/<%= review._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+      <button class="btn btn-outline-danger">Delete</button>
+    </form>
+      
+   <% } %>
     
-   <% }); %>
+    <% } %> <% }); %>
   </div>
 </div>
 

@@ -35,25 +35,25 @@ function seedDB() {
                 if(err) console.log(err)
                 else{
                     console.log("Removed comment");
-                    data.forEach((seed) => {
-                        Review.create(seed, (err, review) => {
-                            if(err) console.log(err);
-                            else{
-                                console.log("Added: review");
-                                Comment.create({
-                                    author: 'Seeder',
-                                    text: "Great review!"
-                                }, (err, comment) => {
-                                    if(err) console.log(err);
-                                    else{
-                                        console.log("Added comment");
-                                        review.comments.push(comment);
-                                        review.save();
-                                    }
-                                })
-                            }
-                        })
-                    })
+                    // data.forEach((seed) => {
+                    //     Review.create(seed, (err, review) => {
+                    //         if(err) console.log(err);
+                    //         else{
+                    //             console.log("Added: review");
+                    //             Comment.create({
+                    //                 author: 'Seeder',
+                    //                 text: "Great review!"
+                    //             }, (err, comment) => {
+                    //                 if(err) console.log(err);
+                    //                 else{
+                    //                     console.log("Added comment");
+                    //                     review.comments.push(comment);
+                    //                     review.save();
+                    //                 }
+                    //             })
+                    //         }
+                    //     })
+                    // })
                 }
             })
         }
