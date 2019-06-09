@@ -6,6 +6,7 @@ var express = require("express"),
     request = require("request");
 
 var User = require("../models/user");
+var middleware = require("../middleware");
 
 // Landing Page
 router.get("/", (req, res) => {
@@ -26,10 +27,6 @@ router.get("/searchbook", (req, res) => {
     }
   });
 });
-
-// ================
-// Register Routes
-// ================
 
 // Show register form
 router.get("/register", (req, res) => {
@@ -69,22 +66,10 @@ router.post(
   (req, res) => {}
 );
 
-// =============
-// Login Routes
-// =============
-
 // Logout route
 router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
 });
-
-// Middleware for verifying a logged in user
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
 
 module.exports = router;

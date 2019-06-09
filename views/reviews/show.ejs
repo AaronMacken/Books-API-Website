@@ -30,8 +30,8 @@
     </p>
 
     <h1 class="card-title">Comments</h1>
-    <% review.comments.forEach((comment) => { %> <% if (comment.author.username
-    === undefined) { %>
+    <% review.comments.forEach((comment) => { %> 
+    <% if (comment.author.username === undefined) { %>
     <p>Seeder - <%= comment.text %></p>
     <% } else { %>
     <p><%= comment.author.username %> - <%= comment.text %></p>

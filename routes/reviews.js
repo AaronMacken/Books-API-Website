@@ -3,6 +3,7 @@ var express = require("express"),
   mongoose = require("mongoose");
 
 var Review = require("../models/review");
+var middleware = require("../middleware");
 
 // Review Index
 router.get("/", (req, res) => {
@@ -16,12 +17,12 @@ router.get("/", (req, res) => {
 });
 
 // New - Show new review form
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   res.render("reviews/new", { currentUser: req.user });
 });
 
 // Create - new review POST route
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   var author = { id: req.user._id, username: req.user.username };
   var reviewObj = {
     name: req.body.review.name,
@@ -54,14 +55,14 @@ router.get("/:id", (req, res) => {
 });
 
 // Edit - Show edit review form
-router.get("/:id/edit", checkPostOwnership, (req, res) => {
+router.get("/:id/edit", middleware.checkPostOwnership, (req, res) => {
   Review.findById(req.params.id, (err, foundReview) => {
     res.render("reviews/edit", {review: foundReview});
   });
 });
 
 // Update - Edit review PUT route
-router.put("/:id", checkPostOwnership, (req, res) => {
+router.put("/:id", middleware.checkPostOwnership, (req, res) => {
   Review.findByIdAndUpdate(
     req.params.id,
     req.body.review,
@@ -76,7 +77,7 @@ router.put("/:id", checkPostOwnership, (req, res) => {
 });
 
 // Destroy
-router.delete("/:id", checkPostOwnership, (req, res) => {
+router.delete("/:id", middleware.checkPostOwnership, (req, res) => {
   Review.findByIdAndRemove(req.params.id, err => {
     if (err) {
       res.redirect("/reviews");
@@ -85,32 +86,5 @@ router.delete("/:id", checkPostOwnership, (req, res) => {
     }
   });
 });
-
-// Middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-
-function checkPostOwnership(req, res, next) {
-  if (req.isAuthenticated()) {
-    Review.findById(req.params.id, (err, foundReview) => {
-      if (err) {
-        res.redirect("back");
-      } else {
-        if (foundReview.author.id.equals(req.user._id)) {
-          next();
-          // res.render("reviews/edit", { review: foundReview });
-        } else {
-          res.redirect("back");
-        }
-      }
-    });
-  } else {
-    res.redirect("back");
-  }
-}
 
 module.exports = router;
