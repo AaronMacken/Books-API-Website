@@ -14,7 +14,8 @@ const express = require("express"),
   passportLocalMongoose = require("passport-local-mongoose"),
   Review = require("./models/review"),
   Comment = require("./models/comment"),
-  User = require("./models/user");
+  User = require("./models/user"),
+  flash = require("connect-flash");
 
 // =================
 // Require Routes
@@ -52,6 +53,8 @@ mongoose.connect("mongodb://localhost:27017/barneys", {
 // ===============
 // Passport Setup
 // ===============
+
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -61,6 +64,8 @@ passport.deserializeUser(User.deserializeUser());
 // This makes req.user is available to all of our templates as currentUser.
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
 });
 
